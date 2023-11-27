@@ -37,12 +37,26 @@ public class RentACatTest {
 
 		// 2. Create an unrented Cat with ID 1 and name "Jennyanydots", assign to c1
 		// TODO: Fill in
+		c1 = Mockito.mock(Cat.class);
+		Mockito.when(c1.getId()).thenReturn(1);
+		Mockito.when(c1.toString()).thenReturn("ID 1. Jennyanydots");
+		
+		//r.addCat(c1);
 
 		// 3. Create an unrented Cat with ID 2 and name "Old Deuteronomy", assign to c2
 		// TODO: Fill in
+		c2 = Mockito.mock(Cat.class);
+		Mockito.when(c2.getId()).thenReturn(2);
+		Mockito.when(c2.toString()).thenReturn("ID 2. Old Deuteronomy");
+		//r.addCat(c2);
 
 		// 4. Create an unrented Cat with ID 3 and name "Mistoffelees", assign to c3
 		// TODO: Fill in
+		c3 = Mockito.mock(Cat.class);
+		Mockito.when(c3.getId()).thenReturn(3);
+		Mockito.when(c3.toString()).thenReturn("ID 3. Mistoffelees");
+		//r.addCat(c3);
+		
 	}
 
 	@After
@@ -68,6 +82,8 @@ public class RentACatTest {
 	@Test
 	public void testGetCatNullNumCats0() {
 		// TODO
+		// check if list of cats returns null when calling on an empty list
+		assertNull(r.getCat(2));
 	}
 
 	/**
@@ -82,8 +98,15 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testGetCatNumCats3() {
+	public void testGetCatNumCats3(){
 		// TODO
+		// add cats 1, 2, 3
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+
+		// call getCat on id 2
+		assertNotNull(r.getCat(2));
 	}
 
 	/**
@@ -99,6 +122,8 @@ public class RentACatTest {
 	@Test
 	public void testCatAvailableFalseNumCats0() {
 		// TODO
+		// call cat available on id 2 when it's an empty list
+		assertFalse(r.catAvailable(2));
 	}
 
 	/**
@@ -114,8 +139,19 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testCatAvailableTrueNumCats3() {
+	public void testCatAvailableTrueNumCats3(){
 		// TODO
+		// add cats 1, 2 and 3
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+		
+		// rent cat c3
+		r.rentCat(c3.getId());
+
+		// call cat available on id 2
+		//System.out.println(" this is cat 2 boolean: " + r.catAvailable(2));
+		assertTrue(r.catAvailable(2));
 	}
 
 	/**
@@ -131,9 +167,20 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testCatAvailableFalseNumCats3() {
+	public void testCatAvailableFalseNumCats3(){
 		// TODO
+		// add cats 1, 2, and 3
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+
+		// rent cat c2
+		Mockito.when(c2.getRented()).thenReturn(true);
+
+		// call catAvailable for id 2
+		assertFalse(r.catAvailable(2));
 	}
+
 
 	/**
 	 * Test case for boolean catExists(int id).
@@ -148,6 +195,8 @@ public class RentACatTest {
 	@Test
 	public void testCatExistsFalseNumCats0() {
 		// TODO
+		// call cat exists on id 2 when it is an empty list
+		assertFalse(r.catExists(2));
 	}
 
 	/**
@@ -161,8 +210,15 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testCatExistsTrueNumCats3() {
+	public void testCatExistsTrueNumCats3(){
 		// TODO
+		// add cats 1, 2 and 3 to list
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+		
+		// call cat exists on id 2
+		assertTrue(r.catExists(2));
 	}
 
 	/**
@@ -178,6 +234,9 @@ public class RentACatTest {
 	@Test
 	public void testListCatsNumCats0() {
 		// TODO
+		
+		// call list cats on empty cats list
+		assertEquals("", r.listCats());
 	}
 
 	/**
@@ -192,8 +251,15 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testListCatsNumCats3() {
+	public void testListCatsNumCats3(){
 		// TODO
+		// add cats 1, 2, and 3
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+
+		// call list cats
+		assertEquals("ID 1. Jennyanydots\nID 2. Old Deuteronomy\nID 3. Mistoffelees\n", r.listCats());
 	}
 
 	/**
@@ -209,6 +275,9 @@ public class RentACatTest {
 	@Test
 	public void testRentCatFailureNumCats0() {
 		// TODO
+		
+		// call rent cat on id 2
+		assertFalse(r.rentCat(2));
 	}
 
 	/**
@@ -228,8 +297,18 @@ public class RentACatTest {
 	 */
 
 	@Test
-	public void testRentCatFailureNumCats3() {
+	public void testRentCatFailureNumCats3(){
 		// TODO
+		// add cats 1, 2, and 3
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+		
+		// rent c2 cat
+		Mockito.when(c2.getRented()).thenReturn(true);
+
+		// call rent cat on id 2 again
+		assertFalse(r.rentCat(2));
 	}
 
 	/**
@@ -245,6 +324,8 @@ public class RentACatTest {
 	@Test
 	public void testReturnCatFailureNumCats0() {
 		// TODO
+		// call return cat on id 2
+		assertFalse(r.returnCat(2));
 	}
 
 	/**
@@ -267,5 +348,23 @@ public class RentACatTest {
 	@Test
 	public void testReturnCatNumCats3() {
 		// TODO
+		// Cats 1, 2, & 3 are added
+		r.addCat(c1);
+		r.addCat(c2);
+		r.addCat(c3);
+		
+		// Cat 2 is rented
+		//c2.rentCat();
+		// Rent cat out
+		Mockito.when(c2.getRented()).thenReturn(true);
+
+		// Return cat
+		// Mockito.when(c2.getRented()).thenReturn(false);
+
+		// Return the cat
+		assertTrue(r.returnCat(2));
+		
+		
 	}
 }
+
